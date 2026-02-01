@@ -1,51 +1,39 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Django Girls blog</title>
-        <link rel="stylesheet" href="{% static 'css/products.css' %}">
-    </head>
-        <!-- data sets -->
-        {% block content %}
-        {% endblock %}
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>amazon_price_alerter Price Alert</title>
 
+    <!-- Bootstrap -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 
+    <!-- embed css files -->
+    <link rel="stylesheet" href="{% static 'products/css/products.css' %}">
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+</head>
 
-    <!--
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
-            function juckt() {
-                var bla = $('amzn_url').val();
-                console.log("Bla", bla);
-            }
-            function send_value(){
-                 $.ajax({
-                     url: '/target_view/',
-                     method : 'POST',
-                     data: {quantity: $('#theInput').val()},
-                     beforeSend: function() {
-                      // things to do before submit
-                     },
-                     success: function(response) {
-                        alert(response)
-                     }
-                 });
-             }
+<body class="bg-light">
 
-             $('#username_exists_form').on('submit',function(e){
-                e.preventDefault();
-                var username = $(this).find('input').val();
-                $.get('/exists/',
-                      {'username': username},
-                      function(response){ $('#response_msg').text(response.msg); }
-                );
-             });
+<nav class="navbar navbar-dark bg-primary mb-4">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">
+            amazon_price_alerter Price Alert
+        </span>
+    </div>
+</nav>
 
-             function btn_click() {
-                 var x = [document.getElementById('amzn_url').value, document.getElementById('desired_price').value]
-                 console.log(document.getElementById('amzn_url').value)
-                 return x
-             }
-        </script>
-        -->
+<div class="container">
 
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+<!-- embed js files -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{% static 'products/js/main.js' %}"></script>
+
+</body>
 </html>

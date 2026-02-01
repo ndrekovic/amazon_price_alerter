@@ -1,6 +1,23 @@
-.idea
-__pycache__
+# virtual env
 venv/
+ENV/
+__pycache__/
+*.py[cod]
+
+# django
+db.sqlite3
+media/
+*.log
+cron.log
+
+# secrets
+.env
+settings_local.py
+
+# editor and os
 .DS_Store
-*.sqlite3
-node_modules
+.idea/
+*.iml
+*.swp
+*.tmp
+*.bak

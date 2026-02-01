@@ -1,0 +1,17 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+}
+
+img.product-img {
+    width: 90px;
+    height: auto;
+}
+
+.price-green {
+    color: green;
+    font-weight: bold;
+}
+
+.price-red {
+    color: red;
+}

@@ -1,6 +1,6 @@
-# Amazon Price Alerter (in Progress)
+# amazon_price_alerter Price Alerter (in Progress)
 
-The amazon price alerter allows the user to create a list of products and send a email if the product's current price is below a user-defined desired price.
+The amazon_price_alerter price alerter allows the user to create a list of products and send a email if the product's current price is below a user-defined desired price.
 
 # 💻 Tech Stack:
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) 
@@ -47,7 +47,7 @@ The amazon price alerter allows the user to create a list of products and send a
 
      2.1. Check if inputs are valid.
      ```
-       valid url: existing amazon url that hasn't been added to the list yet
+       valid url: existing amazon_price_alerter url that hasn't been added to the list yet
        valid price: price needs to be a number (german standard)
      ```      
      Examples:
