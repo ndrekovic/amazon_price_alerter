@@ -2,52 +2,55 @@
 {% block content %}
 
     <body onload="load()" style="background-color:#64b05b">
-        <header class="page-header">
-            <div class="container" style="text-align:center">
-                <h1 style="text-align:center" style="color:green"><b>amazon price alert</b></h1>
-            </div>
-        </header>
-
-        <center>
-            <p style='font-size: 40px; color:#0000ff;' id="product_message"></p>
-            <div float="left" style="text-align:center">
-                <p style='display: inline-block; font-size:40px;'>amazon-Link:</p>
-                <input id="amzn_url" name="amzn_url" style="display: inline-block; width: 800px; height: 40px; font-size:30px;" placeholder="amazon-Link einfügen">
-                <br>
-                <p style='font-size:40px;'>Wunschpreis:</p>
-                <input id="desired_price" name="desired_price" style="width: 400px; height: 40px; font-size:30px; text-align: center" placeholder="Wunschpreis einfügen">
-                <p style='display: inline-block; font-size:40px;'>€</p>
-            </div>
-            <br>
-            
-            <form method="POST" action="/add_product/">
-                {% csrf_token %}
-                <button id="add_product_to_list" type="submit" name="add_product_btn" value="add_btn" class='button'>
-                    Hinzufügen
-                </button>
-            </form>
-
-        </center>
-
-
-        <div class="table-card">
-            <table className="padding-table-columns" class="table table-hover mb-0" style="background-color:#ffc09f">
-                <!-- data attribute names -->
-                <thead>
-                    <tr>
-                        <th style="width:5%;">Bild</th>
-                        <th style="width:5%">Titel</th>
-                        <th style="width:5%; height:30px">URL</th>
-                        <th style="width:5%">Aktueller Preis</th>
-                        <th style="width:5%">Wunschpreis</th>
-                        <th style="width:5%">Löschen</th>
-                    </tr>
-                </thead>
-
-                <!-- data sets -->
-                <tbody class="product_body"></tbody>
-            </table>
+    <header class="page-header">
+        <div class="container" style="text-align:center">
+            <h1 style="text-align:center" style="color:green"><b>Amazon Price Alerter</b></h1>
         </div>
+    </header>
+
+    <center>
+        <p style='font-size: 40px; color:#0000ff;' id="product_message"></p>
+        <div float="left" style="text-align:center">
+            <p style='display: inline-block; font-size:40px;'>amazon url:</p>
+            <input id="amzn_url" name="amzn_url"
+                   style="display: inline-block; width: 800px; height: 40px; font-size:30px;"
+                   placeholder="amazon-url...">
+            <br>
+            <p style='font-size:40px;'>desired price:</p>
+            <input id="desired_price" name="desired_price"
+                   style="width: 150px; height: 40px; font-size:30px; text-align: center" placeholder="limit price">
+            <p style='display: inline-block; font-size:40px;'>€</p>
+        </div>
+        <br>
+
+        <form method="POST" action="/add_product/">
+            {% csrf_token %}
+            <button id="add_product_to_list" type="submit" name="add_product_btn" value="add_btn" class='button'>
+                add
+            </button>
+        </form>
+
+    </center>
+
+
+    <div class="table-card">
+        <table className="padding-table-columns" class="table table-hover mb-0" style="background-color:#ffc09f">
+            <!-- data attribute names -->
+            <thead>
+            <tr>
+                <th style="width:5%;">image</th>
+                <th style="width:5%">title</th>
+                <th style="width:5%; height:30px">url</th>
+                <th style="width:5%">price</th>
+                <th style="width:5%">limit price</th>
+                <th style="width:5%">Delete</th>
+            </tr>
+            </thead>
+
+            <!-- data sets -->
+            <tbody class="product_body"></tbody>
+        </table>
+    </div>
     </body>
 
 {% endblock %}

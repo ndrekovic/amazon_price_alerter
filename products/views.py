@@ -157,7 +157,7 @@ def add_prod(request):
                 send_price_alert(url, round(new_product_data['price'], 2), round(desired_price, 2))
             # update product list once after adding the product
             return JsonResponse({'status': 'new_product_created', 'new_product': new_product_data})
-        except Exception as e:
+        except Exception:
             return JsonResponse({'status': 'only_numbers'})  # only_numbers
 
     return show_webpage(request)
