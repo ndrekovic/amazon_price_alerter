@@ -1,69 +1,118 @@
 # amazon_price_alerter Price Alerter (in Progress)
 
-The amazon_price_alerter price alerter allows the user to create a list of products and send a email if the product's current price is below a user-defined desired price.
+The amazon_price_alerter price alerter allows the user to create a list of products and send a email if the product's
+current price is below a user-defined desired price.
+
+## Features
+
+- Track prices of Amazon products
+- Send email alerts when price drops below target
+- Easy web interface to manage tracked products
 
 # 💻 Tech Stack:
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) 
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-![Scrapy](https://img.shields.io/badge/Scrapy-green?style=for-the-badge&logo=Scrapy)
 ![JavaScript](https://img.shields.io/badge/JavaScript-yellow?style=for-the-badge&logo=JavaScript)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 
-
 ## Installations
+
 1. Clone the repository:
    ```bash
-   git clone https://github.com/nedimdrekovic/amazon_price_alerter.git
+   git clone https://github.com/ndrekovic/amazon_price_alerter.git
+   ```
 
 2. Install a virtual environment to work on and activate it (recommended):
    ```bash
    python3 -m venv <venv_name>
    source <venv_name>/bin/activate
+   ```
 
 3. Install the libraries/packages/modules required to run the project:
    ```bash
    pip install -r requirements.txt
+   ```
 
-4. Run database migrations (run after every change in models.py):
+4. Environment Variables:
+   Create a `.env` file in the project root with:
+   ```bash 
+   EMAIL_USER=your@gmail.com
+   EMAIL_PASSWORD=your_app_password
+   ```
+
+5. Run database migrations (run after every change in models.py):
    ```bash
    python3 manage.py makemigrations
    python3 manage.py migrate
-   
-5. Start the developmemt server to run the project (optional: port):
-   ```bash
-   python3 manage.py runserver <port>
+   ```
 
-6. Open web browser and type:
+6. Start the developmemt server to run the project (optional: port):
+   ```bash
+   python3 manage.py runserver # default port 8000
+   python3 manage.py runserver 8080 # custom port
+   ```
+
+7. 📧 Gmail Setup
+    1. Enable 2FA in Google Account
+    2. Create App Password
+    3. Use App Password in .env
+
+   Link: https://myaccount.google.com/apppasswords
+
+
+8. Open web browser and type:
    ```bash
    http://127.0.0.1:8000/
    or
-   http://127.0.0.1:<port>/    (depending on the port)
+   http://127.0.0.1:<port>/    (if you use a custom port)
+   ```
 
-## Features (new features coming soon)
-1. ```Url and Price```: type url + desired_price
+### Cron Setup
 
-2. ```Adding Product```: press the button ```Add```
+1. Add cron job
+   ```bash
+   crontab -e
+   ```
 
-     2.1. Check if inputs are valid.
-     ```
-       valid url: existing amazon_price_alerter url that hasn't been added to the list yet
-       valid price: price needs to be a number (german standard)
-     ```      
-     Examples:
-     ```
-     1.3 --> valid
-     1,3 --> changed to 1.3 --> valid
-     100.557 --> rounded down to 100.55
-     9999.56,34 --> invalid
-     9999,56.34 --> invalid
-     ```
-   
-3. ```Deleting Product```: deletes product from list by pressing the button ```Delete``` on the product's field.
+2. Insert
+   ```bash
+   */30 * * * * cd /path/to/project && source venv/bin/activate && python manage.py update_prices >> cron.log 2>&1
+   ```
 
+3. Check jobs
+   ```bash
+   crontab -l
+   ```
 
+4. Logs
+   ```bash
+   cron.log
+   ```
 
-## ToDo's:
-- better UI for listing products
-- feature for notifying user when product is available
-- add loading symbol during scraping process
+### Run Tests
+
+Run tests for all Django test files
+
+   ```bash
+   python manage.py test
+   ```
+
+### Project Structure
+
+   ```bash
+   amazon_price_alerter/
+    ├─ products/
+    ├─ venv/
+    ├─ manage.py
+    ├─ cron.log
+   ```
+
+### Security
+
+   ```bash   
+   - Never commit `.env` or any sensitive credentials
+   - Use Gmail App Passwords, not your real password
+   - Keep `venv/` and `node_modules/` out of git
+   ```
