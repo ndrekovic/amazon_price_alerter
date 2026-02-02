@@ -8,6 +8,11 @@ function get_new_product_entry(product_image, product_title, product_url, produc
     }
 
     console.log("product_title:", product_title)
+    console.log("product_price:", product_price)
+
+    var maxLength = 40; // gewünschte Zeichen
+    var short_url = product_url.length > maxLength ? product_url.slice(0, maxLength) + "..." : product_url;
+
 
     var product_tag = `
         <tr style="text-align: center">
@@ -18,7 +23,7 @@ function get_new_product_entry(product_image, product_title, product_url, produc
                 ${product_title}
             </td>
             <td>
-                <a href=${product_url} style="word-wrap:break-word;">${product_url}</a>
+                <a href=${product_url} style="word-wrap:break-word;">${short_url}</a>
             </td>
             <td>
                 <font face='cursive,serif' style="color:${price_color}" size="8px">${product_price}€</font>
@@ -54,8 +59,13 @@ $(document).ready(function () {
                 } else {
                     // show all products
                     for (var product of response['products']) {
+                        console.log("product['url']", product['url'], product['price'])
                         var product_entry = get_new_product_entry(
-                            product['image_url'], product['title'], product['url'], product['price'], product['desired_price']);
+                            product['image_url'],
+                            product['title'],
+                            product['url'],
+                            product['price'],
+                            product['desired_price']);
                         $('.product_body').append(product_entry);
                     }
                 }
@@ -108,6 +118,7 @@ $(document).ready(function () {
                     np['url'],
                     np['price'],
                     np['desired_price'])
+                console.log("NEW PRODUCT:", new_product)
                 $('.product_body').append(new_product)
             } else {
                 message = statusMessages[status] || "Unknown error";
