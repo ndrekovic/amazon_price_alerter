@@ -1,6 +1,6 @@
 # amazon_price_alerter Price Alerter (in Progress)
 
-The amazon_price_alerter price alerter allows the user to create a list of products and send a email if the product's
+The amazon price alerter allows the user to create a list of products and send a email if the product's
 current price is below a user-defined desired price.
 
 ## Features
@@ -116,3 +116,9 @@ Run tests for all Django test files
    - Use Gmail App Passwords, not your real password
    - Keep `venv/` and `node_modules/` out of git
    ```
+
+### 🚀 Future Improvements / ToDo List
+
+- Make image backgrounds transparent
+- Add more tests for edge cases
+- Dockerize the application for easier deployment
