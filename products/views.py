@@ -149,6 +149,8 @@ def add_prod(request):
         data = scrape_amazon_price_alerter(url)
         if not data:
             return JsonResponse({'status': 'not_existing'})
+        if data['price'] == 0:
+            return JsonResponse({'status': 'price_scraping_went_wrong'})
 
         try:
             # get here only if all conditions for creating an object are met
@@ -165,12 +167,12 @@ def add_prod(request):
 @csrf_exempt
 def delete_prod(request):
     """
-    Handles the deleting process of each product
+    Handles the deleting process of each product by filtering out its asin.
 
     :param request: containts data about the current request
     :return: Jsonresponse that returns the generated response for the status update
     """
     if request.method == 'POST':
-        url = request.POST.get('current_product_link')
-        Product.objects.filter(url=url).delete()
+        asin = request.POST.get('asin')
+        Product.objects.filter(asin=asin).delete()
         return JsonResponse({'status': 'deleted'})

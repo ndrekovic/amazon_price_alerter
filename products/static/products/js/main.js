@@ -1,4 +1,4 @@
-function get_new_product_entry(product_image, product_title, product_url, product_price, product_desired_price) {
+function get_new_product_entry(product_image, product_title, product_url, product_price, product_desired_price, product_asin) {
     var price_color = "black"
 
     product_price = Number(product_price)
@@ -6,16 +6,12 @@ function get_new_product_entry(product_image, product_title, product_url, produc
     if (product_price <= product_desired_price) {
         price_color = 'green'
     }
-
-    console.log("product_title:", product_title)
-    console.log("product_price:", product_price)
-
     var maxLength = 40; // gewünschte Zeichen
     var short_url = product_url.length > maxLength ? product_url.slice(0, maxLength) + "..." : product_url;
 
 
     var product_tag = `
-        <tr style="text-align: center">
+        <tr style="text-align: center" data-asin="${product_asin}">
             <td>
                 <img style='size height:200px; background-color: transparent; width:125px' class="product-img" src=${product_image}>
             </td>
@@ -23,7 +19,7 @@ function get_new_product_entry(product_image, product_title, product_url, produc
                 ${product_title}
             </td>
             <td>
-                <a href=${product_url} style="word-wrap:break-word;">${short_url}</a>
+                <a target="_blank" href=${product_url} style="word-wrap:break-word;">${short_url}</a>
             </td>
             <td>
                 <font face='cursive,serif' style="color:${price_color}" size="8px">${product_price}€</font>
@@ -51,7 +47,7 @@ $(document).ready(function () {
             url: '/product_list/',
             dataType: 'json',
             success: function (response) {
-                $('.product_body').empty();  // remove old products
+                $('.product_body').empty();  // remove old products to prevent browser from showing products multiple times
                 if (response['status'] == "data_not_found") {
                     if ($("#product_message").html().trim() === "") {
                         $('#product_message').text("data cannot be updated");
@@ -59,13 +55,13 @@ $(document).ready(function () {
                 } else {
                     // show all products
                     for (var product of response['products']) {
-                        console.log("product['url']", product['url'], product['price'])
                         var product_entry = get_new_product_entry(
                             product['image_url'],
                             product['title'],
                             product['url'],
                             product['price'],
-                            product['desired_price']);
+                            product['desired_price'],
+                            product['asin']);
                         $('.product_body').append(product_entry);
                     }
                 }
@@ -97,8 +93,7 @@ $(document).ready(function () {
                 'desired_price': desired_price
             },
         }).done(function (product) {
-            console.log("Product:", product)
-            message = ""
+            let message = ""
             const status = product['status']
             const statusMessages = {
                 is_already_in_list: "This product is already in your list.",
@@ -107,7 +102,9 @@ $(document).ready(function () {
                 only_numbers: "Only valid numbers in price field.",
                 empty_url_field: "Url field is empty.",
                 not_existing: "Website does not exist.",
+                price_scraping_went_wrong: "Price scraping was not successfully",
             };
+
 
             if (product['status'] == 'new_product_created') {
                 // check if product contains all attributes (later)
@@ -117,8 +114,8 @@ $(document).ready(function () {
                     np['title'],
                     np['url'],
                     np['price'],
-                    np['desired_price'])
-                console.log("NEW PRODUCT:", new_product)
+                    np['desired_price'],
+                    np['asin'])
                 $('.product_body').append(new_product)
             } else {
                 message = statusMessages[status] || "Unknown error";
@@ -140,8 +137,9 @@ $(document).ready(function () {
     // delete button event
     $('tbody').on('click', '#delete_btn', function (event) {
         event.stopPropagation()
-        var current_product = $(this).parent().parent()
-        var current_product_link = current_product.find('a').text() // find unique element which is the url link
+        //var current_product = $(this).parent().parent()
+        var current_product = $(this).closest("tr");
+        var asin = current_product.data("asin");
 
         // read csrf token from cookies
         function getCookie(name) {
@@ -166,7 +164,7 @@ $(document).ready(function () {
             type: 'POST',
             headers: {'X-CSRFToken': csrftoken},
             data: {
-                'current_product_link': current_product_link,
+                'asin': asin,
             },
         }).done(function (response) {
             if (response['status'] === 'deleted') {

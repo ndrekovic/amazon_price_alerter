@@ -8,7 +8,6 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...'
 }
 
-
 def extract_asin(url, html=None):
     """
     Extract ASIN from HTML response.
@@ -28,8 +27,7 @@ def extract_asin(url, html=None):
             asin = asin_tag.get('value')
     return asin
 
-
-def extract_price(soup):
+def extract_price(soup) -> float:
     """
     Extract price from HTML response parser.
     :param soup: HTML response.
@@ -52,7 +50,6 @@ def extract_price(soup):
             except ValueError:
                 continue
     return None  # Preis nicht gefunden
-
 
 def scrape_amazon_price_alerter(url):
     """
