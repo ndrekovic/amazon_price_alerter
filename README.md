@@ -1,4 +1,4 @@
-# amazon_price_alerter Price Alerter (in Progress)
+# Amazon Price Alerter (in Progress)
 
 The amazon price alerter allows the user to create a list of products and send a email if the product's
 current price is below a user-defined desired price.
@@ -120,5 +120,6 @@ Run tests for all Django test files
 ### 🚀 Future Improvements / ToDo List
 
 - Make image backgrounds transparent
+- Make Dashboad prettier (functionality first)
 - Add more tests for edge cases
 - Dockerize the application for easier deployment
