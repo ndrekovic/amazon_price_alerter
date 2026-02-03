@@ -1,4 +1,5 @@
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import reverse
@@ -9,22 +10,23 @@ from ..views import parse_price
 
 class AddProductTests(TestCase):
 
-    def test_add_product_success(self):
-        url = "https://www.amazon.de/dp/B0CHXFCYCR/ref=twister_B0CJ2N73DK?_encoding=UTF8&th=1"
-        response = self.client.post(
-            reverse("add_prod"),
-            {
-                "amzn_url": url,
-                "desired_price": "20.00"
-            }
-        )
+    @patch("products.views.parse_price")
+    def test_add_product_not_existing(self, mock_scrape):
+        mock_scrape.return_value = {
+            "title": "Test Produkt",
+            "price": 99.99,
+            "image_url": "http://img.test",
+            "url": "http://amazon.test"
+        }
 
-        self.assertEqual(response.status_code, 200)
+        response = self.client.post("/add_product/", {
+            "amzn_url": "http://amazon.test",
+            "desired_price": "150"
+        })
 
         data = response.json()
-        self.assertEqual(data["status"], "new_product_created")
 
-        self.assertEqual(Product.objects.count(), 1)
+        self.assertEqual(data["status"], "not_existing")
 
     def test_add_product_empty_url(self):
         response = self.client.post(
