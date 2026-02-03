@@ -82,7 +82,7 @@ class DeleteProductTests(TestCase):
         response = self.client.post(
             reverse("delete_prod"),
             {
-                "current_product_link": self.product.url
+                "asin": self.product.asin
             }
         )
 
