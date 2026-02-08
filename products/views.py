@@ -30,10 +30,11 @@ def product_list(request):
     :return: Jsonresponse that returns the generated response
     """
     status = ""
-    for product in Product.objects.all().values():
-        if not product['mail_has_been_sent']:
+    """for product in Product.objects.all().values():
+        if not product['mail_has_been_sent'] and (product['price'] <= product['desired_price']):
+            send_price_alert(product['url'], round(product['price'], 2), round(product['desired_price'], 2))
             Product.objects.filter(url=product['url']).update(mail_has_been_sent=True)
-        Product.objects.filter(url=product['url']).update(price=product['price'])
+        Product.objects.filter(url=product['url']).update(price=product['price'])"""
 
     products = list(Product.objects.all().values())
     return JsonResponse({'products': products, 'status': status})
@@ -110,15 +111,7 @@ def create_new_product(url, desired_price, data):
         image_url=data['image_url'],
     )
     # define new data
-    return {
-        'asin': new_product.asin,
-        'url': new_product.url,
-        'desired_price': new_product.desired_price,
-        'title': new_product.title,
-        'price': new_product.price,
-        'image_url': new_product.image_url,
-        'mail_has_been_sent': new_product.mail_has_been_sent
-    }
+    return new_product
 
 @csrf_exempt
 def add_prod(request):
@@ -154,9 +147,23 @@ def add_prod(request):
 
         try:
             # get here only if all conditions for creating an object are met
-            new_product_data = create_new_product(url, desired_price, data)
-            if new_product_data['price'] <= desired_price:
-                send_price_alert(url, round(new_product_data['price'], 2), round(desired_price, 2))
+            new_product = create_new_product(url, desired_price, data)
+            if new_product.price <= new_product.desired_price:
+                send_price_alert(url, round(new_product.price, 2), round(desired_price, 2))
+                # prevent email from being sent multiple times
+                new_product.mail_has_been_sent = True
+                new_product.save()
+
+            new_product_data = {
+                'asin': new_product.asin,
+                'url': new_product.url,
+                'desired_price': new_product.desired_price,
+                'title': new_product.title,
+                'price': new_product.price,
+                'image_url': new_product.image_url,
+                'mail_has_been_sent': new_product.mail_has_been_sent
+            }
+
             # update product list once after adding the product
             return JsonResponse({'status': 'new_product_created', 'new_product': new_product_data})
         except Exception:

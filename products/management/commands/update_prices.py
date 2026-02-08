@@ -2,6 +2,7 @@
 
 import logging
 import os
+from decimal import Decimal
 
 from django.core.management.base import BaseCommand
 
@@ -16,10 +17,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE",
 
 logger = logging.getLogger(__name__)
 
-
 class Command(BaseCommand):
     help = "Update product prices and send alerts"
-
 
     def handle(self, *args, **kwargs):
         logger.info("Price update started")
@@ -34,9 +33,9 @@ class Command(BaseCommand):
                 data = scrape_amazon_price_alerter(product.url)
                 if not data:
                     continue
-                new_price = data["price"]
 
                 # update old price of product
+                new_price = Decimal(str(data["price"]))
                 product.price = new_price
                 product.save()
 
