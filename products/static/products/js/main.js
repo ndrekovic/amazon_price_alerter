@@ -96,12 +96,12 @@ $(document).ready(function () {
             let message = ""
             const status = product['status']
             const statusMessages = {
-                is_already_in_list: "This product is already in your list.",
+                product_already_exists: "This product is already in your list.",
                 already_under_limit_price:
                     "The price is already below your desired price.",
-                only_numbers: "Only valid numbers in price field.",
+                invalid_price: "Only valid numbers in price field.",
                 empty_url_field: "Url field is empty.",
-                not_existing: "Website does not exist.",
+                product_not_found: "Website does not exist.",
                 price_scraping_went_wrong: "Price scraping was not successfully",
             };
 
