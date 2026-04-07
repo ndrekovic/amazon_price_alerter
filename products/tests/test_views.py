@@ -26,7 +26,7 @@ class AddProductTests(TestCase):
 
         data = response.json()
 
-        self.assertEqual(data["status"], "not_existing")
+        self.assertEqual(data["status"], "product_not_found")
 
     def test_add_product_empty_url(self):
         response = self.client.post(
@@ -53,7 +53,7 @@ class AddProductTests(TestCase):
         )
 
         data = response.json()
-        self.assertEqual(data["status"], "not_existing")
+        self.assertEqual(data["status"], "product_not_found")
 
         self.assertEqual(Product.objects.count(), 0)
 
@@ -66,7 +66,7 @@ class AddProductTests(TestCase):
             }
         )
 
-        self.assertEqual(response.json()["status"], "only_numbers")
+        self.assertEqual(response.json()["status"], "invalid_price")
 
 class DeleteProductTests(TestCase):
 
