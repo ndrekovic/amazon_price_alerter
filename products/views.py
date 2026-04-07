@@ -128,7 +128,7 @@ def add_prod(request):
 
         # validating input price
         if desired_price is None:
-            return JsonResponse({'status': 'only_numbers'})
+            return JsonResponse({'status': 'invalid_price'})
 
         # validating input url
         if not url:
@@ -136,12 +136,12 @@ def add_prod(request):
 
         # extract asin and check if product is already in list
         if product_exists_already(url):
-            return JsonResponse({'status': 'is_already_in_list'})
+            return JsonResponse({'status': 'product_already_exists'})
 
         # scrape data
         data = scrape_amazon_price_alerter(url)
         if not data:
-            return JsonResponse({'status': 'not_existing'})
+            return JsonResponse({'status': 'product_not_found'})
         if data['price'] == 0:
             return JsonResponse({'status': 'price_scraping_went_wrong'})
 
@@ -167,7 +167,7 @@ def add_prod(request):
             # update product list once after adding the product
             return JsonResponse({'status': 'new_product_created', 'new_product': new_product_data})
         except Exception:
-            return JsonResponse({'status': 'only_numbers'})  # only_numbers
+            return JsonResponse({'status': 'invalid_price'})  # only_numbers
 
     return show_webpage(request)
 

@@ -36,15 +36,16 @@ class Command(BaseCommand):
 
                 # update old price of product
                 new_price = Decimal(str(data["price"]))
-                product.price = new_price
-                product.save()
-
-                if new_price <= product.desired_price and not product.mail_has_been_sent:
-                    send_price_alert(product.url, new_price, product.desired_price)
-
-                    # prevent email from being sent multiple times
-                    product.mail_has_been_sent = True
+                if new_price != 0.0:
+                    product.price = new_price
                     product.save()
+
+                    if new_price <= product.desired_price and not product.mail_has_been_sent:
+                        send_price_alert(product.url, new_price, product.desired_price)
+
+                        # prevent email from being sent multiple times
+                        product.mail_has_been_sent = True
+                        product.save()
 
             except Exception as e:
                 logger.error(f"Error for product {product.id}: {e}")
